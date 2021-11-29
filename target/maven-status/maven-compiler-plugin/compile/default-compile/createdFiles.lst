@@ -1,3 +1,4 @@
+com/logreader/exception/LogExceptionHandler.class
 com/logreader/restservice/LogInput.class
 com/logreader/restservice/LogReader.class
 com/logreader/restservice/RestServiceApplication.class
@@ -5,4 +6,5 @@ com/logreader/exception/LogReaderException.class
 com/logreader/io/ReverseLogInputStream.class
 com/logreader/restservice/LogOutput.class
 com/logreader/restservice/LogReaderController.class
+com/logreader/exception/ExceptionResponse.class
 com/logreader/exception/InvalidInputException.class

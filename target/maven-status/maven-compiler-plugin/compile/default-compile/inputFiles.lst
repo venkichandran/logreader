@@ -2,7 +2,9 @@
 /Users/vchandran/myproject/logreader/src/main/java/com/logreader/restservice/RestServiceApplication.java
 /Users/vchandran/myproject/logreader/src/main/java/com/logreader/io/ReverseLogInputStream.java
 /Users/vchandran/myproject/logreader/src/main/java/com/logreader/exception/InvalidInputException.java
+/Users/vchandran/myproject/logreader/src/main/java/com/logreader/exception/ExceptionResponse.java
 /Users/vchandran/myproject/logreader/src/main/java/com/logreader/restservice/LogInput.java
 /Users/vchandran/myproject/logreader/src/main/java/com/logreader/restservice/LogReaderController.java
 /Users/vchandran/myproject/logreader/src/main/java/com/logreader/exception/LogReaderException.java
 /Users/vchandran/myproject/logreader/src/main/java/com/logreader/restservice/LogOutput.java
+/Users/vchandran/myproject/logreader/src/main/java/com/logreader/exception/LogExceptionHandler.java

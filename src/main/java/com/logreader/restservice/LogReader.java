@@ -12,37 +12,71 @@ public class LogReader {
 
     static final String LOG_LOCATION = "/var/log";
 
-    public List<LogOutput> processRequest(LogInput input) throws LogReaderException, FileNotFoundException, IOException {
+    /**
+     * API to process the request.
+     *
+     * @param LogInput input
+     *
+     * @return List<LogOutput>
+     *
+     * @throws InvalidInputException
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public List<LogOutput> processRequest(LogInput input) throws InvalidInputException, FileNotFoundException, IOException {
 
         List<LogOutput> output = new ArrayList<LogOutput>();
-        try {
+        //try {
             int counter = 1;
             // Validate the input and proceed only if there are valid input
             if (valildateInput(input)) {
-                // Read the log
-                String filePath = LOG_LOCATION+'/'+input.getFileName();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new ReverseLogInputStream(new File(filePath))));
-                while (true) {
-                    String line = reader.readLine();
-                    // Break if the line null or the number of occurances met
-                    if (line == null || input.getOccurance() == counter - 1) {
-                        break;
+                boolean searchLocalOnly = true;
+                // Check for slave request in the input
+                List<String> hosts = input.getHosts();
+                if (hosts != null) {
+                    searchLocalOnly = false;
+                }
+                if (!searchLocalOnly) {
+                    for (String host : hosts) {
+                        // Fire the API to slave
+                        LogInput slaveInput = new LogInput(input.getFileName(),
+                                input.getOccurance(), input.getEvent(), null);
+                        List<LogOutput> slaveOut = processSlaveRequest(slaveInput);
+                        output.addAll(slaveOut);
                     }
-                    // Search for the even and add to the log
-                    if (line.contains(input.getEvent())) {
-                        LogOutput out = new LogOutput(counter, line);
-                        counter++;
-                        output.add(out);
+                } else {
+                    // Read the log
+                    String filePath = LOG_LOCATION + '/' + input.getFileName();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(new ReverseLogInputStream(new File(filePath))));
+                    while (true) {
+                        String line = reader.readLine();
+                        // Break if the line null or the number of occurances met
+                        if (line == null || input.getOccurance() == counter - 1) {
+                            break;
+                        }
+                        // Search for the even and add to the log
+                        if (line.contains(input.getEvent())) {
+                            LogOutput out = new LogOutput(counter, line);
+                            counter++;
+                            output.add(out);
+                        }
                     }
                 }
             }
-        } catch (LogReaderException ex) {
-            throw ex;
-        } catch (FileNotFoundException ex) {
-            throw ex;
-        } catch (IOException ex) {
-            throw ex;
-        }
+//        } catch (LogReaderException ex) {
+//            throw ex;
+//        } catch (FileNotFoundException ex) {
+//            throw ex;
+//        } catch (IOException ex) {
+//            throw ex;
+//        }
+        return output;
+    }
+
+    public List<LogOutput> processSlaveRequest(LogInput input) throws InvalidInputException, FileNotFoundException, IOException {
+
+        List<LogOutput> output = new ArrayList<LogOutput>();
+        // TODO Build slave request input and trigget the API
         return output;
     }
 
