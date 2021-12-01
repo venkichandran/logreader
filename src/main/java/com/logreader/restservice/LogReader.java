@@ -1,7 +1,6 @@
 package com.logreader.restservice;
 
 import com.logreader.exception.InvalidInputException;
-import com.logreader.exception.LogReaderException;
 import com.logreader.io.ReverseLogInputStream;
 
 import java.io.*;
@@ -15,7 +14,7 @@ public class LogReader {
     /**
      * API to process the request.
      *
-     * @param LogInput input
+     * @param input
      *
      * @return List<LogOutput>
      *
@@ -73,6 +72,17 @@ public class LogReader {
         return output;
     }
 
+    /**
+     * Processes slave requests.
+     *
+     * @param input
+     *
+     * @return List<LogOutput>
+     *
+     * @throws InvalidInputException
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public List<LogOutput> processSlaveRequest(LogInput input) throws InvalidInputException, FileNotFoundException, IOException {
 
         List<LogOutput> output = new ArrayList<LogOutput>();
@@ -80,6 +90,13 @@ public class LogReader {
         return output;
     }
 
+    /**
+     * Validates the input.
+     *
+     * @param input
+     * @return
+     * @throws InvalidInputException
+     */
     protected boolean valildateInput(LogInput input) throws InvalidInputException {
         boolean valid = true;
         String msg = "";
