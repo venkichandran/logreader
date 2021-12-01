@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <title>Log Search</title>
+</head>
+<body ng-app="logreader">
+<hr/>
+<div class="container" ng-controller="LogReaderController">
+    <div class="row">
+        <label>File name</label> <input type="text" ng-model="logInput.fileName" class="input-sm spacing"/>
+        <label>Event name</label> <input type="text" ng-model="logInput.event" class="input-sm spacing"/>
+        <label>Number of occurance</label> <input type="text" ng-model="logInput.event" class="input-sm spacing"/>
+        <!--<label>Event name</label> <input type="text" ng-model="logInput.fileName" ng-list class="input-sm custom-width spacing"
+                                     placeholder="use comma to separate skills"/>-->
+        <button ng-click="searchLog()" class="btn btn-sm btn-info">Search</button>
+    </div>
+    <hr/>
+    <div class="row">
+        <p>{{logOutput | json}}</p>
+    </div>
+    <div class="row" ng-repeat="out in logOutput">
+        <div class="">
+            <h3>{{out.id}}</h3>
+            <h3>{{out.content}}</h3>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script src="js/app/app.js"></script>
+<script src="js/app/LogReaderController.js"></script>
+<link rel="stylesheet" href="css/lib/bootstrap.min.css"/>
+<link rel="stylesheet" href="css/app/app.css"/>
+</html>
