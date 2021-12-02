@@ -16,16 +16,20 @@
 package com.logreader.restservice;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,18 +39,62 @@ public class LogReaderControllerTests {
 	private MockMvc mockMvc;
 
 	@Test
-	public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
-
-		this.mockMvc.perform(get("/logreader")).andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.content").value("Hello, World!"));
+	public void noFileExistMessage() throws Exception {
+		this.mockMvc.perform(post("/logreader")
+				.content(asJsonString(new LogInput("system1.log", 5, "error", null)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
 	}
 
 	@Test
-	public void paramGreetingShouldReturnTailoredMessage() throws Exception {
-
-		this.mockMvc.perform(get("/logreader").param("fileName", "Spring Community"))
-				.andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
+	public void noOccuranceMessage() throws Exception {
+		this.mockMvc.perform(post("/logreader")
+						.content(asJsonString(new LogInput("system.log", 0, "error", null)))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
 	}
+
+	@Test
+	public void noEventMessage() throws Exception {
+		this.mockMvc.perform(post("/logreader")
+						.content(asJsonString(new LogInput("system.log", 5, null, null)))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void successMessage() throws Exception {
+		this.mockMvc.perform(post("/logreader")
+						.content(asJsonString(new LogInput("system.log", 5, "error", null)))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+	public static String asJsonString(final Object obj) {
+		try {
+			return new ObjectMapper().writeValueAsString(obj);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+//	@Test
+//	public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
+//
+//		this.mockMvc.perform(get("/logreader")).andDo(print()).andExpect(status().isOk())
+//				.andExpect(jsonPath("$.content").value("Hello, World!"));
+//	}
+//
+//	@Test
+//	public void paramGreetingShouldReturnTailoredMessage() throws Exception {
+//
+//		this.mockMvc.perform(get("/logreader").param("fileName", "Spring Community"))
+//				.andDo(print()).andExpect(status().isOk())
+//				.andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
+//	}
 
 }

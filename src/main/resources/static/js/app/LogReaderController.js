@@ -1,6 +1,6 @@
 'use strict'
 
-var module = angular.module('demo.controllers', []);
+var module = angular.module('demo.controllers', ['ngRoute']);
 module.controller("LogReaderController", ["$scope", "LogReaderController",
     function($scope, LogReaderController) {
 

@@ -2,6 +2,11 @@ package com.logreader.io;
 
 import java.io.*;
 
+/**
+ * Implementation input stream class for reading the log reverse.
+ *
+ * @author Venki Chandran
+ */
 public class ReverseLogInputStream extends InputStream {
 
     long start = -1;
@@ -12,6 +17,12 @@ public class ReverseLogInputStream extends InputStream {
 
     RandomAccessFile input;
 
+    /**
+     * Constructor
+     *
+     * @param file
+     * @throws FileNotFoundException
+     */
     public  ReverseLogInputStream(File file) throws FileNotFoundException {
         // Read the file
         input = new RandomAccessFile(file, "r");
@@ -45,6 +56,11 @@ public class ReverseLogInputStream extends InputStream {
         }
     }
 
+    /**
+     * Finds the previous line for reverse reading.
+     *
+     * @throws IOException
+     */
     private void findPreviousLine() throws IOException {
 
         // For the first time read, position at the end
