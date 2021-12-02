@@ -1,7 +1,7 @@
 'use strict'
 
 var demoApp = angular.module('demo', [ 'ui.bootstrap', 'demo.controllers',
-                             		'demo.services', 'ngRoute' ]);
+                             		'demo.services' ]);
 
 //demoApp.use("/static", express.static('./static/'));
 

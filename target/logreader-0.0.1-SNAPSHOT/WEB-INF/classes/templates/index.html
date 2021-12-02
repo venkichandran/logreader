@@ -16,6 +16,7 @@
         <button ng-click="searchLog()" class="btn btn-sm btn-info">Search</button>
     </div>
     <hr/>
+    <!--
     <div class="row">
         <p>{{logOutput | json}}</p>
     </div>
@@ -25,11 +26,27 @@
             <h3>{{out.content}}</h3>
         </div>
     </div>
+    -->
+    <div class="container" >
+        <table>
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Content</td>
+                </tr>
+            </thead>
+            <tbody ng-repeat="out in logOutput">
+                <tr>
+                    <td>{{out.id}}</td>
+                    <td>{{out.content}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 
 <script src="js/lib/angular.min.js"></script>
-<script src="js/lib/angular-route.min.js"></script>
 <script src="js/lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
 <script src="js/app/app.js"></script>
 <script src="js/app/LogReaderController.js"></script>
